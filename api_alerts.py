@@ -1,20 +1,10 @@
 import requests
-#import firebase_admin
-#from firebase_admin import db
-import pyrebase
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-config = {
-  "apiKey": "AIzaSyDkXIft0OEGQXwB9vfzWagKb1UP7vZyO5Y",
-  "authDomain": "hacks22.firebaseapp.com",
-  "projectId": "hacks22",
-  "storageBucket": "hacks22.appspot.com",
-  "messagingSenderId": "354618591630",
-  "appId": "1:354618591630:web:cb9a454ed8f04481dcbcdf",
-  "measurementId": "G-6HC3T3K2J3" }
-
-firebase = pyrebase.initialize_app(config)
-
-dados = firebase.database()
+cred = credentials.Certificate("./hacks22-firebase-adminsdk-hn1pi-3582006243.json")
+firebase_admin.initialize_app(cred)
+store = firestore.client()
 
 
 def main(city='Petrópolis'):
@@ -29,10 +19,6 @@ def main(city='Petrópolis'):
     hoje = r.json()["hoje"]
     futuro = r.json()["futuro"]
 
-    out_hj = []
-    out_fut = []
-    ### Procurar por Petrópolis em Hoje
-
     for dic in hoje:  # Ciclo sobre as listas de 'hoje' (cada uma contem um dic de aviso)
         municipios = dic["municipios"]
 
@@ -43,10 +29,8 @@ def main(city='Petrópolis'):
                     "severidade": dic["severidade"],
                     "riscos": dic["riscos"],
                     "instrucoes": dic["instrucoes"]}
-            out_hj.append(data)
-            dados.child("alerts").push(data)
-
-
+            doc_ref = store.collection(u'alerts')
+            doc_ref.add(data)
         except:
             pass
 
@@ -59,20 +43,12 @@ def main(city='Petrópolis'):
                     "severidade": dic["severidade"],
                     "riscos": dic["riscos"],
                     "instrucoes": dic["instrucoes"]}
-            out_fut.append(data)
-            dados.child("alerts_future").push(data)
-
-
+            doc_ref = store.collection(u'alerts_future')
+            doc_ref.add(data)
         except:
             pass
 
-    #### Push para firebase
-
-    # json
-    df = {"hoje": out_hj,
-          "futuro": out_fut}
-
-    return df
+    return True
 
 
 if __name__ == "__main__":
