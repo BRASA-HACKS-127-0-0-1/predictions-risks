@@ -36,7 +36,7 @@ def gerador_pings(N_x=500, N_y=500, N_p=27777):
         if i>=2:
             i=-1
         ii =  reg[i]  # Selecionar uma das tres
-        return np.random.randint(ii[0],ii[1])
+        return np.random.randint(ii[0],ii[1]),np.random.randint(ii[0],ii[1])
     
     def resto():
         ss = N_x
@@ -56,22 +56,22 @@ def gerador_pings(N_x=500, N_y=500, N_p=27777):
         wg = np.random.randint(1, 4)  # pesos iguais probabilidades... 
 
         ### 75% de chances do ping se referir a uma area de risco
-        if p > 0.75:
+        if p > 0.85 :
             wg = np.random.randint(1, 3)  # pesos iguais probabilidades peso 1 ou 2
             lat, long = ping(resto(), resto())
 
         else:
             cr += 1
             # zona de risco peso =3
-            lat, long = ping(risco(), risco())
+            lat, long = ping(risco())
             wg = 3
 
         #pingoo.append({'latitude': lat, 'longitude': long, 'weight': wg})
         doc_ref = store.collection(u'reports')
-        doc_ref.add({'latitude': lat, 'longitude': long, 'weight': wg})
+        doc_ref.add({'latitude': lat, 'longitude': long, 'weight': wg*10})
 
     return pingoo 
 
 
 if __name__ == "__main__":
-    print(gerador_pings(int(input("N_x: ")), int(input("N_y: ")), int(input("N_p: "))))
+    print(gerador_pings())
