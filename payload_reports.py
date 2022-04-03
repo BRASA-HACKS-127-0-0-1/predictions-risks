@@ -1,6 +1,6 @@
 import numpy as np
 
-def gerador_pings(N_x, N_y, N_p):
+def gerador_pings(N_x=500, N_y=500, N_p=27777):
     """"
     N_x: len x_axis (The greater the better)
     N_y: len y_axis (ideally N_y===N_x)
@@ -59,7 +59,7 @@ def gerador_pings(N_x, N_y, N_p):
             lat, long = ping(risco(), risco())
             wg = 3
 
-        pingoo.append({'latitude': lat, 'longitude': long, 'weight': wg})
+        pingoo.append({'latitude': lat, 'longitude': long, 'weight': wg*10})
 
     return pingoo 
 
