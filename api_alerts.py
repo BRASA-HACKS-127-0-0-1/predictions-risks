@@ -24,13 +24,17 @@ def main(city='Petrópolis'):
 
         try:
             _ = municipios.index(city)
-            data = {"descricao": dic["descricao"],
-                    "aviso_cor": dic["aviso_cor"],
-                    "severidade": dic["severidade"],
-                    "riscos": dic["riscos"],
-                    "instrucoes": dic["instrucoes"]}
-            doc_ref = store.collection(u'alerts')
-            doc_ref.add(data)
+            data = {
+                "alert_id": f'{dic["id"]}',
+                "descricao": dic["descricao"],
+                "aviso_cor": dic["aviso_cor"],
+                "severidade": dic["severidade"],
+                "riscos": dic["riscos"],
+                "instrucoes": dic["instrucoes"]
+            }
+            print(data)
+            doc_ref = store.collection(u'alerts').document(f'{dic["id"]}')
+            doc_ref.set(data)
         except:
             pass
 
@@ -38,13 +42,16 @@ def main(city='Petrópolis'):
         municipios = dic["municipios"]
         try:
             _ = municipios.index(city)
-            data = {"descricao": dic["descricao"],
-                    "aviso_cor": dic["aviso_cor"],
-                    "severidade": dic["severidade"],
-                    "riscos": dic["riscos"],
-                    "instrucoes": dic["instrucoes"]}
-            doc_ref = store.collection(u'alerts_future')
-            doc_ref.add(data)
+            data = {
+                "alert_id": dic["id"],
+                "descricao": dic["descricao"],
+                "aviso_cor": dic["aviso_cor"],
+                "severidade": dic["severidade"],
+                "riscos": dic["riscos"],
+                "instrucoes": dic["instrucoes"]
+            }
+            doc_ref = store.collection(u'alerts_future').document(f'{dic["id"]}')
+            doc_ref.set(data)
         except:
             pass
 
