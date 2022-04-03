@@ -1,4 +1,11 @@
 import numpy as np
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+cred = credentials.Certificate("./hacks22-firebase-adminsdk-hn1pi-3582006243.json")
+firebase_admin.initialize_app(cred)
+store = firestore.client()
+
 
 def gerador_pings(N_x=500, N_y=500, N_p=27777):
     """"
@@ -59,9 +66,12 @@ def gerador_pings(N_x=500, N_y=500, N_p=27777):
             lat, long = ping(risco(), risco())
             wg = 3
 
-        pingoo.append({'latitude': lat, 'longitude': long, 'weight': wg*10})
+        #pingoo.append({'latitude': lat, 'longitude': long, 'weight': wg})
+        doc_ref = store.collection(u'reports')
+        doc_ref.add({'latitude': lat, 'longitude': long, 'weight': wg})
 
     return pingoo 
+
 
 if __name__ == "__main__":
     print(gerador_pings(int(input("N_x: ")), int(input("N_y: ")), int(input("N_p: "))))
