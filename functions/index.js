@@ -24,7 +24,7 @@ exports.onAlertCreate = functions.firestore
     return Promise.all(promises);
   });
 
-  exports.apiFetch = functions.pubsub.schedule('every 12 hours').onRun(() => {
+  exports.apiFetch = functions.pubsub.schedule('every 5 minutes').onRun(() => {
     return getAlerts();
   });
 
