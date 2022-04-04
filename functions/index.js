@@ -11,7 +11,7 @@ exports.onAlertCreate = functions.firestore
     .document('alerts_future/{alertId}')
     .onCreate((change, context) => sendAlerts(change, context, true));
 
-  exports.apiFetch = functions.pubsub.schedule('every 5 minutes').onRun(() => {
+  exports.apiFetch = functions.pubsub.schedule('every 2 hours').onRun(() => {
     return getAlerts();
 });
 
@@ -77,7 +77,6 @@ async function sendAlerts(change, context) {
     return Promise.all(promises);
 }
 async function sendAlert(token, alert, isFuture = false) {
-    console.log('sendAlert');
     return axios.post('https://exp.host/--/api/v2/push/send',
         {
             to: token,
