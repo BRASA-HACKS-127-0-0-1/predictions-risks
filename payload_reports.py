@@ -19,9 +19,9 @@ def createDataPoints(centroidLocation, numSamples, clusterDeviation):
                 wg = 3
             #Xx.append({'latitude': it[0], 'longitude': it[1], 'weight': 10*wg})
 
-            
+
             doc_ref = store.collection(u'reports')
-            doc_ref.add({'latitude': it[0], 'longitude': it[1], 'weight': 10*wg})
+            doc_ref.add({'latitude': it[0], 'longitude': it[1], 'weight': 10 * wg})
             
         
         return "Okay"

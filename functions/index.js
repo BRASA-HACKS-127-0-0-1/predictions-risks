@@ -11,7 +11,7 @@ exports.onAlertCreate = functions.firestore
     .document('alerts_future/{alertId}')
     .onCreate((change, context) => sendAlerts(change, context, true));
 
-  exports.apiFetch = functions.pubsub.schedule('every 2 hours').onRun(() => {
+exports.apiFetch = functions.pubsub.schedule('every 2 hours').onRun(() => {
     return getAlerts();
 });
 
@@ -59,6 +59,7 @@ async function getAlerts() {
         await batch.commit();
     }
 }
+
 async function sendAlerts(change, context) {
     const newValue = change.data();
     const alertId = context.params.alertId;
@@ -76,6 +77,7 @@ async function sendAlerts(change, context) {
     });
     return Promise.all(promises);
 }
+
 async function sendAlert(token, alert, isFuture = false) {
     return axios.post('https://exp.host/--/api/v2/push/send',
         {
